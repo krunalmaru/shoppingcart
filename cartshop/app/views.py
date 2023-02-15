@@ -51,6 +51,30 @@ def mobile(request, data=None):
         mobile = Product.objects.filter(category='M').filter(discounted_price__lt=20000) 
     return render(request, 'app/mobile.html',{'mobile':mobile})
 
+def topwear(request,data=None):
+    if data == None:
+        topwear = Product.objects.filter(category='TW')
+    elif data=='amul' or data=='Lee' or data=='dandg':
+        topwear = Product.objects.filter(category='TW').filter(brand=data)
+    elif data=='above':
+        topwear = Product.objects.filter(category='TW').filter(discounted_price__gt=1000)
+    elif data=='below':
+        topwear = Product.objects.filter(category='TW').filter(discounted_price__lt=1000)
+    context = {'topwear':topwear}
+    return render(request,'app/topwear.html',context)
+
+def bottomwear(request, data=None):
+    if data == None:
+        bottomwear = Product.objects.filter(category='BW')
+    elif data=='amul' or data=='Lee' or data=='dandg':
+        bottomwear = Product.objects.filter(category='BW').filter(brand=data)
+    elif data=='above':
+        bottomwear = Product.objects.filter(category='BW').filter(discounted_price__gt=1000)
+    elif data=='below':
+        bottomwear = Product.objects.filter(category='BW').filter(discounted_price__lt=1000)
+    context = {'bottomwear':bottomwear}
+    return render(request,'app/bottomwear.html',context)
+
 def login(request):
  return render(request, 'app/login.html')
 
