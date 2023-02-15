@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from .models import Product,Cart,Customer,OrderPlaced
 from django.views import View
-# def home(request):
-#  return render(request, 'app/home.html')
+from django.contrib import messages
+from .forms import UserRegistrationForm
 
 class ProductView(View):
     def get(self,request):
@@ -18,9 +18,6 @@ class ProductDetailView(View):
         productdetail = Product.objects.get(pk=pk)
         context = {'productdetail':productdetail}
         return render(request,'app/productdetail.html',context)
-
-# def product_detail(request):
-#  return render(request, 'app/productdetail.html')
 
 def add_to_cart(request):
  return render(request, 'app/addtocart.html')
@@ -78,8 +75,20 @@ def bottomwear(request, data=None):
 def login(request):
  return render(request, 'app/login.html')
 
-def customerregistration(request):
- return render(request, 'app/customerregistration.html')
+# def customerregistration(request):
+#  return render(request, 'app/customerregistration.html')
+
+class CustomerRegistrationView(View):
+    def get(self,request):
+        fm = UserRegistrationForm()
+        return render(request, 'app/customerregistration.html',{'form':fm})
+    def post(self,request):
+        fm = UserRegistrationForm(request.POST)
+        if fm.is_valid():
+            messages.success(request,'Your Registration Successfully')
+            fm.save()
+        return render(request, 'app/customerregistration.html',{'form':fm})
+
 
 def checkout(request):
  return render(request, 'app/checkout.html')
